@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "482b6357-9340-4a90-80c1-8668cdddad01",
+		"name": "Cocos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26996958"
+	},
+	"item": [
+		{
+			"name": "Portfolio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/users/:userId/portfolio",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						":userId",
+						"portfolio"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Instruments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/instruments?q=AR",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"instruments"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "AR"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ticker\": \"ARS\",\n    \"side\": \"BUY\",\n    \"type\": \"MARKET\",\n    \"userId\": 1,\n    \"investmentType\" :\"SHARES\",\n    \"investmentAmount\" : 600000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
