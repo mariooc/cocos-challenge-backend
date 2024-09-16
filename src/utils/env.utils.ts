@@ -6,7 +6,7 @@ dotenv.config();
 export const env = cleanEnv(process.env, {
   NODE_ENV: str({
     devDefault: testOnly('local'),
-    choices: ['development', 'production', 'local'],
+    choices: ['development', 'production', 'local', 'test'],
   }),
   PORT: port({ devDefault: testOnly(3000) }),
   DB_HOST: str({ desc: 'Host for the postgres database' }),

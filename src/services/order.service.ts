@@ -1,5 +1,5 @@
 import { FIAT_TICKER, FIAT_UNIT } from '@/constants/orders.constant';
-import dataSource from '@/entities/dataSource';
+import { dataSource } from '@/entities/dataSource';
 import { Instrument } from '@/entities/instrument.entity';
 import { MarketData } from '@/entities/marketData.entity';
 import { Order } from '@/entities/order.entity';
@@ -45,7 +45,7 @@ const validationsOnCreateOrder = async (input: CreateOrderInput) => {
   return true;
 };
 
-const validatationsOnFunds = ({
+const validationsOnFunds = ({
   userARS,
   position,
   input,
@@ -59,6 +59,7 @@ const validatationsOnFunds = ({
   let error: string | null = null;
   let totalPrice = 0;
   let size = 0;
+
   const { close: currentPrice } = marketData;
 
   if (input.investmentType === InvestmentType.SHARES) {
@@ -161,7 +162,7 @@ export const createOrder = async (input: CreateOrderInput) => {
       user = user!;
       fiat = fiat!;
 
-      const errorFunds = validatationsOnFunds({
+      const errorFunds = validationsOnFunds({
         userARS,
         position,
         marketData,
