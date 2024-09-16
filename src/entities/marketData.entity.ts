@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Instrument } from '@/entities/instrument.entity';
-
+import { transformer } from 'zod';
 @Entity({ name: 'marketdata' })
 export class MarketData extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -25,7 +25,12 @@ export class MarketData extends BaseEntity {
   @Column({ type: 'numeric', precision: 10, scale: 2 })
   close: number;
 
-  @Column({ type: 'numeric', precision: 10, scale: 2, name: 'previousclose' })
+  @Column({
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    name: 'previousclose',
+  })
   previousClose: number;
 
   @Column({ type: 'date' })
@@ -41,5 +46,23 @@ export class MarketData extends BaseEntity {
       .where('instrument.ticker = :ticker', { ticker })
       .orderBy('marketData.date', 'DESC')
       .getOne();
+  }
+
+  static getMarket(tickers: string[]): Promise<MarketData[]> {
+    return this.createQueryBuilder('marketData')
+      .innerJoin(
+        (qb) =>
+          qb
+            .subQuery()
+            .select('submd.instrumentid', 'instrumentid')
+            .addSelect('MAX(submd.date)', 'last')
+            .from(MarketData, 'submd')
+            .groupBy('submd.instrumentid'),
+        'latest',
+        'marketData.instrumentid = latest.instrumentid AND marketData.date = latest.last'
+      )
+      .innerJoin('marketData.instrument', 'instrument')
+      .where('instrument.ticker IN (:...tickers)', { tickers })
+      .getMany();
   }
 }

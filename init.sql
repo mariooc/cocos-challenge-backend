@@ -341,3 +341,19 @@ WHERE
 GROUP BY
     o.userid,
     o.instrumentId;
+
+CREATE VIEW latest_marketdata AS
+SELECT
+  md.*
+FROM
+  marketdata md
+  INNER JOIN (
+    SELECT
+      instrumentid,
+      MAX(date) AS last_date
+    FROM
+      marketdata
+    GROUP BY
+      instrumentid
+  ) latest_data ON md.instrumentid = latest_data.instrumentid
+  AND md.date = latest_data.last_date;

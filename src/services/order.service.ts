@@ -52,7 +52,7 @@ const validationsOnFunds = ({
   marketData,
 }: {
   userARS: number;
-  position: UserSummary;
+  position: UserSummary | null;
   marketData: MarketData;
   input: CreateOrderInput;
 }) => {
@@ -61,6 +61,7 @@ const validationsOnFunds = ({
   let size = 0;
 
   const { close: currentPrice } = marketData;
+  const { ticker } = input;
 
   if (input.investmentType === InvestmentType.SHARES) {
     totalPrice = currentPrice * input.investmentAmount;
@@ -84,6 +85,12 @@ const validationsOnFunds = ({
   }
 
   if (input.side === OrderSide.SELL) {
+    if (!position) {
+      const message = `User not has position for instrument ${ticker}`;
+      logger.error(message);
+      throw new BusinessError(message);
+    }
+
     if (size > position.totalSize) {
       const message = `${input.ticker} cantidad insuficiente para vender (${size}) > : position:(${position.totalSize})`;
       logger.error(message);
@@ -158,7 +165,6 @@ export const createOrder = async (input: CreateOrderInput) => {
       // TODO: CHECK NOT-NULL ASSERTION
       instrument = instrument!;
       marketData = marketData!;
-      position = position!;
       user = user!;
       fiat = fiat!;
 
@@ -171,7 +177,7 @@ export const createOrder = async (input: CreateOrderInput) => {
 
       const { price, size, totalPrice } = errorFunds.data;
       logger.info(`Price: ${price}, Size: ${size}, TotalPrice: ${totalPrice}`);
-      logger.info(`UserARS: ${userARS}, Position: ${position.totalSize}`);
+      logger.info(`UserARS: ${userARS}, Position: ${position?.totalSize}`);
 
       if (errorFunds.error) {
         logger.error(errorFunds.error);
