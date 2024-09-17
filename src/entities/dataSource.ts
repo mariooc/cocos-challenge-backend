@@ -7,7 +7,7 @@ import { UserSummary } from './userSummary.entity';
 import { MarketData } from './marketData.entity';
 import { Order } from './order.entity';
 
-const dataSource = new DataSource({
+export const dataSource = new DataSource({
   type: 'postgres',
   host: env.DB_HOST,
   port: env.DB_PORT,
@@ -17,5 +17,3 @@ const dataSource = new DataSource({
   entities: [Instrument, User, UserSummary, MarketData, Order],
   logging: true,
 });
-
-export default dataSource;

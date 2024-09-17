@@ -1,6 +1,18 @@
 export type Portfolio = {
-  totalSize: number;
-  instrumentId: number;
-  instrumentName: string;
   ticker: string;
+  instrumentId: number;
+  name: string;
+  quantity: number;
+  price: number;
+  profit: number;
+  total: number;
+};
+
+export type Summary = {
+  instrumentId: number;
+  totalSize: number;
+  name: string;
+  ticker: string;
+  close: number;
+  previousClose: number;
 };
