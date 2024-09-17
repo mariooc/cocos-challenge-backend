@@ -23,7 +23,19 @@ git clone https://github.com/mariooc/cocos-challenge-backend
 cd cocos-challenge-backend
 ```
 
-### 2. Iniciar DB
+### 2. Instalar dependencias
+
+```bash
+npm i
+```
+
+### 3. configurar el archivo .env
+
+```bash
+cp .env.example .env
+```
+
+### 4. Iniciar DB
 
 Inicia la base de datos Docker.
 
@@ -31,7 +43,7 @@ Inicia la base de datos Docker.
 docker-compose up -d
 ```
 
-### 3. Iniciar el servidor
+### 5. Iniciar el servidor
 
 Inicia el servidor Node.js.
 
@@ -39,7 +51,7 @@ Inicia el servidor Node.js.
 npm run dev
 ```
 
-### 4. Acceder al servidor
+### 6. Acceder al servidor
 
 ```
 http://localhost:3000
