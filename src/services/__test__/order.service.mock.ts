@@ -9,11 +9,12 @@ import {
   OrderType,
 } from '@/types/order.types';
 
+export const TICKER = 'METR';
 export const validInput: CreateOrderInput = {
   investmentType: InvestmentType.SHARES,
   side: OrderSide.SELL,
   type: OrderType.LIMIT,
-  ticker: 'METR',
+  ticker: TICKER,
   investmentAmount: 100,
   userId: 1,
 };
@@ -42,7 +43,7 @@ export const mockUserSummary = {
 
 export const mockInstrument = {
   id: 1,
-  ticker: 'METR',
+  ticker: TICKER,
   name: 'MetroGAS S.A.',
   type: 'ACCIONES',
 } as Instrument;

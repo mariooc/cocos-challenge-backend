@@ -17,7 +17,7 @@ import {
 import { logger } from '@/utils/logger.utils';
 
 const validationsOnCreateOrder = async (input: CreateOrderInput) => {
-  const { userId, ticker, side } = input;
+  const { userId, ticker, side, investmentType } = input;
 
   const user = await User.getUser(userId);
   if (!user) {
@@ -42,6 +42,20 @@ const validationsOnCreateOrder = async (input: CreateOrderInput) => {
     }
   }
 
+  let size = 0;
+  const { close: currentPrice } = getLatestByTicker;
+
+  if (input.investmentType === InvestmentType.SHARES) {
+    size = input.investmentAmount;
+  } else {
+    size = input.investmentAmount / currentPrice;
+  }
+
+  if (!Number.isInteger(size)) {
+    logger.error(`No allow floats for investmentAmount ${size}`);
+    throw new BusinessError(`No allow integers for investmentAmount ${size}`);
+  }
+
   return true;
 };
 
@@ -61,7 +75,7 @@ const validationsOnFunds = ({
   let size = 0;
 
   const { close: currentPrice } = marketData;
-  const { ticker } = input;
+  const { ticker, side } = input;
 
   if (input.investmentType === InvestmentType.SHARES) {
     totalPrice = currentPrice * input.investmentAmount;
@@ -71,20 +85,13 @@ const validationsOnFunds = ({
     size = input.investmentAmount / currentPrice;
   }
 
-  if (input.side === OrderSide.BUY) {
+  if (side === OrderSide.BUY) {
     if (userARS < totalPrice) {
       const message = `Insuficiente ARS para comprar ${totalPrice}, ARS: ${userARS}`;
       logger.error(message);
       error = message;
     }
-
-    if (!Number.isInteger(size)) {
-      logger.error(`La cantidad de acciones no es un numero entero ${size}`);
-      error = `La cantidad de acciones no es un numero entero ${size}`;
-    }
-  }
-
-  if (input.side === OrderSide.SELL) {
+  } else {
     if (!position) {
       const message = `User not has position for instrument ${ticker}`;
       logger.error(message);
@@ -92,13 +99,7 @@ const validationsOnFunds = ({
     }
 
     if (size > position.totalSize) {
-      const message = `${input.ticker} cantidad insuficiente para vender (${size}) > : position:(${position.totalSize})`;
-      logger.error(message);
-      error = message;
-    }
-
-    if (!Number.isInteger(size)) {
-      const message = `${input.ticker} cantidad no es un numero entero (${size})`;
+      const message = `${ticker} cantidad insuficiente para vender (${size}) > : position:(${position.totalSize})`;
       logger.error(message);
       error = message;
     }
