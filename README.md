@@ -40,7 +40,7 @@ cp .env.example .env
 modificar los permisos del archivo .init.sql
 
 ```bash
-chmod 664 .init.sql
+chmod 664 init.sql
 ```
 
 ### 5. Iniciar DB
