@@ -35,7 +35,15 @@ npm i
 cp .env.example .env
 ```
 
-### 4. Iniciar DB
+### 4. Permisos
+
+modificar los permisos del archivo .init.sql
+
+```bash
+chmod 664 .init.sql
+```
+
+### 5. Iniciar DB
 
 Inicia la base de datos Docker.
 
@@ -43,7 +51,7 @@ Inicia la base de datos Docker.
 docker-compose up -d
 ```
 
-### 5. Iniciar el servidor
+### 6. Iniciar el servidor
 
 Inicia el servidor Node.js.
 
@@ -51,7 +59,7 @@ Inicia el servidor Node.js.
 npm run dev
 ```
 
-### 6. Acceder al servidor
+### 7. Acceder al servidor
 
 ```
 http://localhost:3000

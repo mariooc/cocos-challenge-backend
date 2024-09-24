@@ -1,6 +1,6 @@
 {
   "name": "cocos-challenge-backend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/server.ts | pino-pretty",
@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@vitest/coverage-v8": "^2.1.1",
+    "pino-pretty": "^11.2.2",
     "tsx": "^4.7.2",
     "typescript": "^5.4.4",
     "vitest": "^2.0.0"
